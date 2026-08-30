@@ -1,0 +1,109 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hallazgos — Cabbage Patch Kids (Konami, 1984)</title>
+<style>
+:root{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;--linea:#23262e;
+  --rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+@media (prefers-color-scheme:light){:root{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;
+  --panel:#f7f6f2;--linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}}
+:root[data-theme="dark"]{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;
+  --linea:#23262e;--rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+:root[data-theme="light"]{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;--panel:#f7f6f2;
+  --linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fondo);color:var(--tinta);padding:0 1.25rem 6rem;
+  font:15px/1.7 ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+.w{max-width:1120px;margin:0 auto}
+.n{max-width:68ch}
+h1,h2,h3,h4{font-weight:400;text-wrap:balance}
+a{color:var(--cyan)}
+img{image-rendering:pixelated;max-width:100%;height:auto;display:block}
+header.top{display:flex;flex-direction:column;align-items:center;gap:1.5rem;
+  padding:4rem 0 2rem;text-align:center}
+header.top img{width:min(100%,642px)}
+.claim{max-width:60ch;color:var(--suave);font-size:1.05rem}
+.claim b{color:var(--tinta);font-weight:400}
+.ficha{display:flex;flex-wrap:wrap;justify-content:center;gap:0 1.5rem;width:100%;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--suave);
+  border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:.85rem 0}
+.ficha b{color:var(--rojo);font-weight:400}
+nav{display:flex;flex-wrap:wrap;gap:1.25rem;justify-content:center;padding:1.25rem 0;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+nav a{color:var(--suave);text-decoration:none;border-bottom:1px solid transparent}
+nav a:hover,nav a:focus{color:var(--tinta);border-bottom-color:var(--rojo)}
+nav.docs{border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);
+  margin-bottom:1rem}
+section{margin-top:4.5rem;scroll-margin-top:1rem}
+section>h2{font-size:1rem;letter-spacing:.1em;text-transform:uppercase;
+  border-left:3px solid var(--rojo);padding-left:.9rem;margin:0 0 1.5rem}
+.cifras{display:grid;gap:1px;background:var(--linea);border:1px solid var(--linea);
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.cifra{background:var(--panel);padding:1.1rem}
+.cifra b{display:block;font-size:1.7rem;color:var(--oro);font-weight:400;
+  font-variant-numeric:tabular-nums;line-height:1.2}
+.cifra span{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--suave)}
+.hall{border-top:1px solid var(--linea);padding-top:1.75rem;margin-top:2.5rem}
+.hall:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.hall h3{margin:0 0 .75rem;font-size:1.15rem;color:var(--rojo)}
+.hall h4{color:var(--oro);margin:1.5rem 0 .5rem;font-size:.95rem}
+.hall p{margin:0 0 1rem}
+pre.asm{background:var(--panel);border-left:2px solid var(--verde);margin:1.25rem 0;
+  padding:1rem 1.1rem;overflow-x:auto;font-size:13px;line-height:1.6;color:var(--tinta)}
+.par{display:grid;gap:1.25rem;grid-template-columns:1fr}
+@media(min-width:820px){.par{grid-template-columns:1fr 1fr}}
+.par figure{margin:0}
+table{border-collapse:collapse;width:100%;margin:1.25rem 0;font-size:13px;display:block;
+  overflow-x:auto}
+th,td{text-align:left;padding:.5rem .75rem;border-bottom:1px solid var(--linea)}
+th{color:var(--suave);font-weight:400;font-size:11px;letter-spacing:.07em;text-transform:uppercase}
+td.num{font-variant-numeric:tabular-nums;color:var(--oro)}
+.nivel{margin-top:2rem}
+.nivel h3{margin:0 0 .9rem;font-size:.95rem;letter-spacing:.06em;text-transform:uppercase}
+.nivel em{color:var(--cyan);font-style:normal}
+.sep{color:var(--suave);margin:0 .6rem}
+.rejilla{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.rejilla figure{margin:0;background:var(--panel);box-shadow:0 0 0 1px var(--linea)}
+.rejilla figcaption{display:flex;justify-content:space-between;padding:.45rem .65rem;
+  font-size:11px;color:var(--suave);border-top:1px solid var(--linea)}
+.dir{font-variant-numeric:tabular-nums;color:var(--verde)}
+footer{margin-top:5rem;padding-top:1.5rem;border-top:1px solid var(--linea);
+  color:var(--suave);font-size:12px}
+
+/* Aviso de trabajo en curso: tiene que verse antes que las cifras, porque un
+   100% mal leido hace mas dano que no ponerlo. */
+.aviso{background:#3a2a10;border-left:3px solid var(--oro);margin:1.5rem auto;
+  padding:1rem 1.2rem;max-width:900px;border-radius:4px}
+.aviso p{margin:0;color:var(--tinta);font-size:15px;line-height:1.65}
+.galeria{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1.5rem;margin:1.5rem 0}
+.galeria figure{margin:0}
+.galeria img{width:100%;height:auto;image-rendering:pixelated;
+  border:1px solid var(--linea);border-radius:3px}
+.galeria figcaption{color:var(--suave);font-size:13px;margin-top:.5rem}
+audio{display:block;width:100%;max-width:640px;margin:.75rem 0 1.5rem}
+</style>
+<div class="w"><nav class="top"><a href="index.html">Portada</a><a href="EMPEZAR.html">Empezar</a><a href="EL-JUEGO.html">El juego</a><a href="EL-CARTUCHO.html">El cartucho</a><a href="EL-CODIGO.html">El código</a><a href="HALLAZGOS.html" style=color:var(--tinta)>Hallazgos</a><a href="EN-EL-EMULADOR.html">En el emulador</a><a href="PREGUNTAS-ABIERTAS.html">Preguntas abiertas</a><a href="../FINDINGS.html" style="margin-left:auto;color:var(--oro)">English</a></nav>
+<h1 id="hallazgos">Hallazgos</h1>
+<h2 id="viajan-datos-de-otro-juego-y-aqui-no-los-lee-nadie">Viajan datos de otro juego, y aquí no los lee nadie</h2>
+<p>Tres bloques son, <b>byte a byte</b>, datos de <b>Athletic Land</b>, el cartucho anterior de la casa:</p>
+<table><tr><th>aquí</th><th>bytes</th><th>allí</th><th>desfase</th></tr><tr><td>0x6718</td><td>16</td><td>0x6DD4</td><td>+1.724</td></tr><tr><td>0x6AA6</td><td>251</td><td>0x6E90</td><td>+1.002</td></tr><tr><td>0x6BF6</td><td>172</td><td>0x6FF9</td><td>+1.027</td></tr></table>
+<p>Son las listas de fondo y los tiles de los cerros y las mesetas. Y <b>no se usan</b>: ninguna instrucción del cartucho los apunta con un inmediato, y sus direcciones tampoco aparecen dentro de ninguna tabla. Lo mismo pasa con la rutina muerta de <code>0x44D2</code>, cinco bytes que pondrían el color del borde y a los que no llama nadie — la misma rutina, en el mismo estado, que aquel cartucho lleva.</p>
+<p>Y eso no es una suposición de familia. Este juego <b>es</b> aquel motor recompilado: alineando los dos instrucción a instrucción, con los operandos de 16 bits a cero, <b>el 68,5 % de las instrucciones casan una a una</b>, en veintinueve tramos de veinte instrucciones o más. Lo que sobra son 439 bytes de decorado que ya no pinta nadie.</p>
+<h3 id="y-por-eso-las-anotaciones-llevan-guardiana">Y por eso las anotaciones llevan guardiana</h3>
+<p>Como el motor es el mismo, las anotaciones se trajeron con <code>tools/porta_desde_athletic.py</code>, que alinea los dos listados y mueve cada etiqueta y cada comentario a la dirección que le toca aquí. Eso pone el comentario en el sitio correcto, pero <b>no cambia lo que dice</b>, y el reensamblado no puede notarlo: un comentario no es un byte.</p>
+<p><code>tools/repasa_el_porte.py</code> es la comprobación, y no es heurística. Cazó, entre otras cosas, cinco comentarios que publicaban las cuentas de tiles del hermano —un <code>ld hl,nn</code> normalizado es la misma instrucción en los dos cartuchos, y la cifra de la que habla está en el <code>ld bc,nn</code> de debajo—. Por eso compara la instrucción del comentario <b>y la siguiente</b>.</p>
+<h2 id="le-pones-nombre-a-tu-muneco-y-el-nombre-juega">Le pones nombre a tu muñeco, y el nombre juega</h2>
+<p>Entre el menú y el juego hay dos pantallas. En la primera se elige el muñeco; en la segunda se escribe su nombre, diez letras, que de fábrica dice <b>ANNA LEE</b> — y eso está escrito en los valores de arranque del jugador, en <code>0x44A3</code>, al lado de las tres vidas y el reloj, así que el nombre es tan parte de empezar una partida como ellos.</p>
+<p><img src="../imagenes/nombre.png" alt="Poniéndole nombre"></p>
+<p>Con dos jugadores la pantalla vuelve: <code>0x426B</code> ve el disparo y, si el bit 5 de <code>0xE002</code> dice que son dos, cambia de turno y devuelve el paso del menú a 1 para que el otro bautice el suyo.</p>
+<h2 id="138-bytes-de-codigo-con-pinta-de-datos">138 bytes de código con pinta de datos</h2>
+<p>El despachador no vuelve nunca a su <code>call</code>, así que lo que tenga que correr después de un estado se empuja antes en la pila. Sin caer en eso, dos rutinas enteras —el parpadeo del rótulo del jugador y la lectura de teclas del menú— no las alcanza el trazador y salen del listado como si fueran un pegote de datos.</p>
+<p>La evidencia es una sola instrucción: <code>ld hl,04735h</code> y <code>ld hl,040c1h</code> en 0x4131 y 0x4136, y el <code>push hl</code> de 0x4140.</p>
+<h2 id="los-256-bytes-que-se-pidieron-como-24">Los 256 bytes que se pidieron como 24</h2>
+<p>La copia espejada cuenta con B. La llamada de <code>0x6CD1</code> carga <code>ld bc,0x0018</code>, que pone 0x18 en <b>C</b> y deja <b>B a cero</b>, y un <code>djnz</code> desde cero da 256 vueltas. Así que esa copia lleva 256 bytes a la tabla de patrones, de los que luego las dos copias siguientes pisan el medio: lo que queda a la vista de ella son los dos extremos.</p>
+<h2 id="no-lleva-la-marca-oculta">No lleva la marca oculta</h2>
+<p>Muchos cartuchos de Konami esconden detrás del relleno del final de la ROM su número de catálogo y el título en katakana. El formato —el título al revés, su longitud, las dos últimas cifras del RC en BCD y un <code>0xAA</code>— lo descubrió <b>Manuel Pazos</b> (<a href="https://threadreaderapp.com/thread/1437082207634575365.html">@ManuelPazosMSX</a>), y es gracias a él que se sabe que hay que mirar ahí.</p>
+<p>Éste no la lleva: <code>tools/marca_konami.py</code> no encuentra ningún <code>0xAA</code> que cierre nada, y lo que hay al final son datos del reproductor de sonido. <b>El RC-716 sale del catálogo, no del binario.</b></p>
+<h2 id="y-el-titulo-dice-de-quien-es-la-licencia">Y el título dice de quién es la licencia</h2>
+<p>La pantalla del título pone <code>© OAA,INC. 1983</code> —Original Appalachian Artworks, los dueños de los Cabbage Patch Kids— mientras que la de juego pone <code>©KONAMI 1984</code>. Dos años distintos y dos dueños distintos, en dos pantallas distintas, escritos con la misma fuente.</p>
+<footer><p><em>Cabbage Patch Kids</em> lo publico Konami para MSX; su numero de catalogo es RC-716 y son 16 KB. Todos los derechos sobre el juego siguen siendo de sus titulares. Este trabajo es de preservacion, estudio y documentacion, y la imagen del cartucho no se distribuye.</p></footer></div>

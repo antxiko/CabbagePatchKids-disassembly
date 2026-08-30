@@ -1,0 +1,90 @@
+# Puntos de entrada de Cabbage Patch Kids (Konami, RC-716, 1984). ROM de 16 KB
+# en 0x4000. Cada uno con la instruccion que lo justifica.
+#
+# El unico punto de entrada que declara el cartucho es INIT: la BIOS lee la
+# cabecera "AB" y salta ahi al terminar de arrancar. Todo lo demas sale de
+# seguir el flujo, o de una instruccion que se puede senalar.
+0x404F   # INIT, declarado en la cabecera del cartucho
+
+# La rutina de interrupcion. INIT escribe `jp 0x402C` en el gancho H.KEYI
+# (0xFD9A) con `ld a,0C3h / ld (0FD9Ah),a / ld hl,402Ch / ld (0FD9Bh),hl` en
+# 0x4052-0x405C, y acaba en `jr $` (0x4080): TODO el juego corre desde aqui.
+0x402C
+
+# --- El despachador de estados. 0x4082 es el "call seguido de tabla" de
+# Konami: `add a,a / pop hl / call 4022h (hl += a) / ld e,(hl) / inc hl /
+# ld d,(hl) / ex de,hl / jp (hl)`. La tabla va PEGADA detras del call, y su
+# tamano es la distancia hasta su destino mas bajo.
+# Tabla de 0x4144 (call en 0x4141): los 20 estados del juego.
+0x416C   # estado 0
+0x416F   # estado 1
+0x4183   # estado 2
+0x4196   # estado 3
+0x41AB   # estado 4
+0x41B3   # estado 5
+0x41BD   # estado 6
+0x41C7   # estado 7
+0x41F2   # estado 8
+0x42A1   # estado 9
+0x42D7   # estado 10
+0x4300   # estado 11
+0x4320   # estado 12
+0x4358   # estado 13
+0x4373   # estado 14
+0x4391   # estado 15
+0x43DB   # estados 16 y 18
+0x4418   # estado 17
+0x4427   # estado 19
+
+# Tabla de 0x41F8 (call en 0x41F5): los seis pasos del menu, indice E001.
+0x4204
+0x421A
+0x4248
+0x4259
+0x425F
+0x426B
+
+# Tabla de 0x6016 (call en 0x6013): los estados del jugador. Las entradas 9 a
+# 14 son 0x0000 y no se usan: saltar ahi reiniciaria la maquina.
+0x620D
+0x6038
+0x664A
+0x614C
+0x61B3
+0x61E5
+0x61FA
+0x62F6
+0x6322
+0x6392
+0x6365
+
+# Tabla de 0x785D (call en 0x785A) y tabla de 0x7960 (call en 0x795D).
+0x792A
+0x791E
+0x7928
+0x7865
+0x79A4
+0x7968
+
+# --- Direcciones de RETORNO metidas en la pila. El despachador NUNCA vuelve al
+# call, asi que lo que tiene que correr DESPUES del estado se empuja antes: el
+# `ret` del estado aterriza ahi. Sin esto, estas rutinas salen como datos.
+0x40C1   # `ld hl,040c1h` en 0x4136 y `push hl` en 0x4140: lo que corre tras el
+         # estado fuera de partida. El otro camino es 0x4735.
+0x4735   # `ld hl,04735h` en 0x4131 y el mismo `push hl`: lo que corre tras el
+         # estado con partida en marcha (bit 6 de E002).
+
+# --- Parametros en linea. 0x59BC (el motor de rotulos) empieza por `pop hl` y
+# copia con ldir los SEIS bytes que siguen al call a 0xE150 (dos punteros y una
+# direccion de VRAM), y vuelve detras de ellos. Sin esta regla el trazador se
+# come los parametros como codigo en los tres sitios que lo llaman.
+!skip 0x59BC 6
+
+# --- Codigo al que NO llega nadie (buscado: ni call, ni jp, ni jr, ni la
+# palabra cruda en ninguna tabla). Se desensambla porque es codigo, y se dice
+# que nadie lo llama.
+0x44D2   # `ld (0E03Fh),a / jr 0x44E2`: pondria A en la copia del registro 7 del
+         # VDP (el borde) y remandaria los ocho registros. Es, byte a byte, la
+         # misma rutina muerta que lleva Athletic Land en 0x4523.
+0x4533   # `ld a,(hl) / inc hl / jr 0x4523`: la variante de copia del bucle de
+         # escritura a la VRAM, que aqui no usa nadie.

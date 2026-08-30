@@ -1,0 +1,109 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Findings — Cabbage Patch Kids (Konami, 1984)</title>
+<style>
+:root{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;--linea:#23262e;
+  --rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+@media (prefers-color-scheme:light){:root{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;
+  --panel:#f7f6f2;--linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}}
+:root[data-theme="dark"]{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;
+  --linea:#23262e;--rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+:root[data-theme="light"]{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;--panel:#f7f6f2;
+  --linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fondo);color:var(--tinta);padding:0 1.25rem 6rem;
+  font:15px/1.7 ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+.w{max-width:1120px;margin:0 auto}
+.n{max-width:68ch}
+h1,h2,h3,h4{font-weight:400;text-wrap:balance}
+a{color:var(--cyan)}
+img{image-rendering:pixelated;max-width:100%;height:auto;display:block}
+header.top{display:flex;flex-direction:column;align-items:center;gap:1.5rem;
+  padding:4rem 0 2rem;text-align:center}
+header.top img{width:min(100%,642px)}
+.claim{max-width:60ch;color:var(--suave);font-size:1.05rem}
+.claim b{color:var(--tinta);font-weight:400}
+.ficha{display:flex;flex-wrap:wrap;justify-content:center;gap:0 1.5rem;width:100%;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--suave);
+  border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:.85rem 0}
+.ficha b{color:var(--rojo);font-weight:400}
+nav{display:flex;flex-wrap:wrap;gap:1.25rem;justify-content:center;padding:1.25rem 0;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+nav a{color:var(--suave);text-decoration:none;border-bottom:1px solid transparent}
+nav a:hover,nav a:focus{color:var(--tinta);border-bottom-color:var(--rojo)}
+nav.docs{border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);
+  margin-bottom:1rem}
+section{margin-top:4.5rem;scroll-margin-top:1rem}
+section>h2{font-size:1rem;letter-spacing:.1em;text-transform:uppercase;
+  border-left:3px solid var(--rojo);padding-left:.9rem;margin:0 0 1.5rem}
+.cifras{display:grid;gap:1px;background:var(--linea);border:1px solid var(--linea);
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.cifra{background:var(--panel);padding:1.1rem}
+.cifra b{display:block;font-size:1.7rem;color:var(--oro);font-weight:400;
+  font-variant-numeric:tabular-nums;line-height:1.2}
+.cifra span{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--suave)}
+.hall{border-top:1px solid var(--linea);padding-top:1.75rem;margin-top:2.5rem}
+.hall:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.hall h3{margin:0 0 .75rem;font-size:1.15rem;color:var(--rojo)}
+.hall h4{color:var(--oro);margin:1.5rem 0 .5rem;font-size:.95rem}
+.hall p{margin:0 0 1rem}
+pre.asm{background:var(--panel);border-left:2px solid var(--verde);margin:1.25rem 0;
+  padding:1rem 1.1rem;overflow-x:auto;font-size:13px;line-height:1.6;color:var(--tinta)}
+.par{display:grid;gap:1.25rem;grid-template-columns:1fr}
+@media(min-width:820px){.par{grid-template-columns:1fr 1fr}}
+.par figure{margin:0}
+table{border-collapse:collapse;width:100%;margin:1.25rem 0;font-size:13px;display:block;
+  overflow-x:auto}
+th,td{text-align:left;padding:.5rem .75rem;border-bottom:1px solid var(--linea)}
+th{color:var(--suave);font-weight:400;font-size:11px;letter-spacing:.07em;text-transform:uppercase}
+td.num{font-variant-numeric:tabular-nums;color:var(--oro)}
+.nivel{margin-top:2rem}
+.nivel h3{margin:0 0 .9rem;font-size:.95rem;letter-spacing:.06em;text-transform:uppercase}
+.nivel em{color:var(--cyan);font-style:normal}
+.sep{color:var(--suave);margin:0 .6rem}
+.rejilla{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.rejilla figure{margin:0;background:var(--panel);box-shadow:0 0 0 1px var(--linea)}
+.rejilla figcaption{display:flex;justify-content:space-between;padding:.45rem .65rem;
+  font-size:11px;color:var(--suave);border-top:1px solid var(--linea)}
+.dir{font-variant-numeric:tabular-nums;color:var(--verde)}
+footer{margin-top:5rem;padding-top:1.5rem;border-top:1px solid var(--linea);
+  color:var(--suave);font-size:12px}
+
+/* Aviso de trabajo en curso: tiene que verse antes que las cifras, porque un
+   100% mal leido hace mas dano que no ponerlo. */
+.aviso{background:#3a2a10;border-left:3px solid var(--oro);margin:1.5rem auto;
+  padding:1rem 1.2rem;max-width:900px;border-radius:4px}
+.aviso p{margin:0;color:var(--tinta);font-size:15px;line-height:1.65}
+.galeria{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1.5rem;margin:1.5rem 0}
+.galeria figure{margin:0}
+.galeria img{width:100%;height:auto;image-rendering:pixelated;
+  border:1px solid var(--linea);border-radius:3px}
+.galeria figcaption{color:var(--suave);font-size:13px;margin-top:.5rem}
+audio{display:block;width:100%;max-width:640px;margin:.75rem 0 1.5rem}
+</style>
+<div class="w"><nav class="top"><a href="index.html">Home</a><a href="GETTING-STARTED.html">Start</a><a href="THE-GAME.html">The game</a><a href="THE-CARTRIDGE.html">The cartridge</a><a href="THE-CODE.html">The code</a><a href="FINDINGS.html" style=color:var(--tinta)>Findings</a><a href="IN-THE-EMULATOR.html">In the emulator</a><a href="OPEN-QUESTIONS.html">Open questions</a><a href="es/HALLAZGOS.html" style="margin-left:auto;color:var(--oro)">Castellano</a></nav>
+<h1 id="findings">Findings</h1>
+<h2 id="another-game-s-data-is-riding-along-and-nothing-reads-it">Another game&#x27;s data is riding along, and nothing reads it</h2>
+<p>Three blocks are, <b>byte for byte</b>, data from <b>Athletic Land</b>, the house&#x27;s earlier cartridge:</p>
+<table><tr><th>here</th><th>bytes</th><th>there</th><th>offset</th></tr><tr><td>0x6718</td><td>16</td><td>0x6DD4</td><td>+1,724</td></tr><tr><td>0x6AA6</td><td>251</td><td>0x6E90</td><td>+1,002</td></tr><tr><td>0x6BF6</td><td>172</td><td>0x6FF9</td><td>+1,027</td></tr></table>
+<p>They are the background lists and the tiles of hills and plateaus. And they are <b>not used</b>: no instruction in the cartridge points at them with an immediate, and their addresses do not appear inside any table either. The same goes for the dead routine at <code>0x44D2</code>, five bytes that would set the border colour and which nothing calls — the very same routine, in the very same state, as the one that cartridge carries.</p>
+<p>That is not a guess about the family. This game <b>is</b> that engine recompiled: aligning the two instruction by instruction, with the 16-bit operands zeroed, <b>68.5% of the instructions line up one to one</b>, in twenty-nine runs of twenty instructions or more. What is left over is 439 bytes of scenery nobody draws.</p>
+<h3 id="and-that-is-why-the-annotations-carry-a-guardian">And that is why the annotations carry a guardian</h3>
+<p>Because the engine is the same, the annotations were ported across with <code>tools/porta_desde_athletic.py</code>, which aligns the two listings and moves each label and comment to the address it belongs to here. That puts the comment in the right place, but <b>it does not change what it says</b>, and the reassembly cannot notice: a comment is not a byte.</p>
+<p><code>tools/repasa_el_porte.py</code> is the check for it, and it is not heuristic. It caught, among others, five comments that published the sibling&#x27;s tile counts — <code>ld hl,nn</code> normalises to the same instruction in both cartridges, and the number they talk about is in the <code>ld bc,nn</code> underneath. That is why it compares the instruction the comment sits on <b>and the one after it</b>.</p>
+<h2 id="you-name-your-kid-and-the-name-plays">You name your kid, and the name plays</h2>
+<p>Two screens stand between the menu and the game. On the first you pick the kid; on the second you type its name, ten letters, which comes out of the factory saying <b>ANNA LEE</b> — and that is written into the player&#x27;s start-up values at <code>0x44A3</code>, next to the three lives and the clock, so the name is as much part of starting a game as they are.</p>
+<p><img src="imagenes/nombre.png" alt="Naming the kid"></p>
+<p>With two players the screen comes round twice: <code>0x426B</code> sees the fire key, and if bit 5 of <code>0xE002</code> says there are two, it changes turn and sets the menu step back to 1 so the other player names theirs.</p>
+<h2 id="138-bytes-of-code-that-look-like-data">138 bytes of code that look like data</h2>
+<p>The dispatcher never returns to its <code>call</code>, so whatever has to run after a state is pushed on the stack beforehand. Miss that and two whole routines —the label blink and the menu&#x27;s key reading— are never reached by the tracer and come out of the listing as if they were a data blob.</p>
+<p>The evidence is a single instruction: <code>ld hl,04735h</code> / <code>ld hl,040c1h</code> at 0x4131 and 0x4136, and the <code>push hl</code> at 0x4140.</p>
+<h2 id="the-256-bytes-that-were-asked-for-as-24">The 256 bytes that were asked for as 24</h2>
+<p>The mirrored copy counts with B. The call at <code>0x6CD1</code> loads <code>ld bc,0x0018</code>, which puts 0x18 in <b>C</b> and leaves <b>B at zero</b>, and a <code>djnz</code> from zero goes round 256 times. So that copy carries 256 bytes into the pattern table, of which the middle is then overwritten by the two copies that follow: what is left showing of it are the two ends.</p>
+<h2 id="no-hidden-mark">No hidden mark</h2>
+<p>Many Konami cartridges hide their catalogue number and the title in katakana behind the filler at the end of the ROM. The format —title backwards, its length, the last two digits of the RC in BCD and an <code>0xAA</code>— was found by <b>Manuel Pazos</b> (<a href="https://threadreaderapp.com/thread/1437082207634575365.html">@ManuelPazosMSX</a>), and it is thanks to him that anyone knows to look there.</p>
+<p>This cartridge does not have it: <code>tools/marca_konami.py</code> finds no <code>0xAA</code> closing anything, and what is at the end is sound-player data. <b>RC-716 comes from the catalogue, not from the binary.</b></p>
+<h2 id="and-the-title-says-who-the-licence-belongs-to">And the title says who the licence belongs to</h2>
+<p>The title screen reads <code>© OAA,INC. 1983</code> — Original Appalachian Artworks, who own the Cabbage Patch Kids — while the play screen reads <code>©KONAMI 1984</code>. Two different years and two different owners, on two different screens, both written in the same font.</p>
+<footer><p><em>Cabbage Patch Kids</em> was published by Konami for the MSX; its catalogue number is RC-716 and it is 16 KB. All rights in the game remain with their holders. This is preservation, study and documentation work, and the cartridge image is not distributed.</p></footer></div>

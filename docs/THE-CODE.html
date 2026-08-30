@@ -1,0 +1,114 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The code — Cabbage Patch Kids (Konami, 1984)</title>
+<style>
+:root{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;--linea:#23262e;
+  --rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+@media (prefers-color-scheme:light){:root{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;
+  --panel:#f7f6f2;--linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}}
+:root[data-theme="dark"]{--tinta:#cfd0d4;--suave:#83868f;--fondo:#000;--panel:#0c0e13;
+  --linea:#23262e;--rojo:#ff897d;--cyan:#65dbef;--verde:#3eb849;--oro:#ded087}
+:root[data-theme="light"]{--tinta:#191a1e;--suave:#5a5d66;--fondo:#e9e7e1;--panel:#f7f6f2;
+  --linea:#d0cdc5;--rojo:#b23f34;--cyan:#1c6b7c;--verde:#2b7734;--oro:#8a7420}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fondo);color:var(--tinta);padding:0 1.25rem 6rem;
+  font:15px/1.7 ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+.w{max-width:1120px;margin:0 auto}
+.n{max-width:68ch}
+h1,h2,h3,h4{font-weight:400;text-wrap:balance}
+a{color:var(--cyan)}
+img{image-rendering:pixelated;max-width:100%;height:auto;display:block}
+header.top{display:flex;flex-direction:column;align-items:center;gap:1.5rem;
+  padding:4rem 0 2rem;text-align:center}
+header.top img{width:min(100%,642px)}
+.claim{max-width:60ch;color:var(--suave);font-size:1.05rem}
+.claim b{color:var(--tinta);font-weight:400}
+.ficha{display:flex;flex-wrap:wrap;justify-content:center;gap:0 1.5rem;width:100%;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--suave);
+  border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:.85rem 0}
+.ficha b{color:var(--rojo);font-weight:400}
+nav{display:flex;flex-wrap:wrap;gap:1.25rem;justify-content:center;padding:1.25rem 0;
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+nav a{color:var(--suave);text-decoration:none;border-bottom:1px solid transparent}
+nav a:hover,nav a:focus{color:var(--tinta);border-bottom-color:var(--rojo)}
+nav.docs{border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);
+  margin-bottom:1rem}
+section{margin-top:4.5rem;scroll-margin-top:1rem}
+section>h2{font-size:1rem;letter-spacing:.1em;text-transform:uppercase;
+  border-left:3px solid var(--rojo);padding-left:.9rem;margin:0 0 1.5rem}
+.cifras{display:grid;gap:1px;background:var(--linea);border:1px solid var(--linea);
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.cifra{background:var(--panel);padding:1.1rem}
+.cifra b{display:block;font-size:1.7rem;color:var(--oro);font-weight:400;
+  font-variant-numeric:tabular-nums;line-height:1.2}
+.cifra span{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--suave)}
+.hall{border-top:1px solid var(--linea);padding-top:1.75rem;margin-top:2.5rem}
+.hall:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.hall h3{margin:0 0 .75rem;font-size:1.15rem;color:var(--rojo)}
+.hall h4{color:var(--oro);margin:1.5rem 0 .5rem;font-size:.95rem}
+.hall p{margin:0 0 1rem}
+pre.asm{background:var(--panel);border-left:2px solid var(--verde);margin:1.25rem 0;
+  padding:1rem 1.1rem;overflow-x:auto;font-size:13px;line-height:1.6;color:var(--tinta)}
+.par{display:grid;gap:1.25rem;grid-template-columns:1fr}
+@media(min-width:820px){.par{grid-template-columns:1fr 1fr}}
+.par figure{margin:0}
+table{border-collapse:collapse;width:100%;margin:1.25rem 0;font-size:13px;display:block;
+  overflow-x:auto}
+th,td{text-align:left;padding:.5rem .75rem;border-bottom:1px solid var(--linea)}
+th{color:var(--suave);font-weight:400;font-size:11px;letter-spacing:.07em;text-transform:uppercase}
+td.num{font-variant-numeric:tabular-nums;color:var(--oro)}
+.nivel{margin-top:2rem}
+.nivel h3{margin:0 0 .9rem;font-size:.95rem;letter-spacing:.06em;text-transform:uppercase}
+.nivel em{color:var(--cyan);font-style:normal}
+.sep{color:var(--suave);margin:0 .6rem}
+.rejilla{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.rejilla figure{margin:0;background:var(--panel);box-shadow:0 0 0 1px var(--linea)}
+.rejilla figcaption{display:flex;justify-content:space-between;padding:.45rem .65rem;
+  font-size:11px;color:var(--suave);border-top:1px solid var(--linea)}
+.dir{font-variant-numeric:tabular-nums;color:var(--verde)}
+footer{margin-top:5rem;padding-top:1.5rem;border-top:1px solid var(--linea);
+  color:var(--suave);font-size:12px}
+
+/* Aviso de trabajo en curso: tiene que verse antes que las cifras, porque un
+   100% mal leido hace mas dano que no ponerlo. */
+.aviso{background:#3a2a10;border-left:3px solid var(--oro);margin:1.5rem auto;
+  padding:1rem 1.2rem;max-width:900px;border-radius:4px}
+.aviso p{margin:0;color:var(--tinta);font-size:15px;line-height:1.65}
+.galeria{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1.5rem;margin:1.5rem 0}
+.galeria figure{margin:0}
+.galeria img{width:100%;height:auto;image-rendering:pixelated;
+  border:1px solid var(--linea);border-radius:3px}
+.galeria figcaption{color:var(--suave);font-size:13px;margin-top:.5rem}
+audio{display:block;width:100%;max-width:640px;margin:.75rem 0 1.5rem}
+</style>
+<div class="w"><nav class="top"><a href="index.html">Home</a><a href="GETTING-STARTED.html">Start</a><a href="THE-GAME.html">The game</a><a href="THE-CARTRIDGE.html">The cartridge</a><a href="THE-CODE.html" style=color:var(--tinta)>The code</a><a href="FINDINGS.html">Findings</a><a href="IN-THE-EMULATOR.html">In the emulator</a><a href="OPEN-QUESTIONS.html">Open questions</a><a href="es/EL-CODIGO.html" style="margin-left:auto;color:var(--oro)">Castellano</a></nav>
+<h1 id="the-code">The code</h1>
+<h2 id="everything-happens-inside-the-interrupt">Everything happens inside the interrupt</h2>
+<p><code>INIT</code> (0x404F) sets the stack at 0xE400, clears 0xE000-0xE3FF, writes <code>jp 0x402C</code> into the H.KEYI hook, sets up the VDP and the PSG, loads the font, and falls into <code>jr $</code> at 0x4080. It never leaves.</p>
+<p>From there the interrupt is the program. Every frame it:</p>
+<ol><li>plays the sound —always, even if the frame before ran long—,</li><li>reads the controls, if there is a game in play,</li><li>runs <b>one step</b> of the state that <code>0xE000</code> names.</li></ol>
+<p><code>0xE005</code> is the latch. While a step is running it is set, and if the next interrupt arrives before the step has finished it only moves the music along and leaves (<code>0x404C</code>). The game slows down; it does not trip over itself.</p>
+<h2 id="the-dispatcher-and-the-table-behind-the-call">The dispatcher, and the table behind the CALL</h2>
+<p><code>DESPACHA</code> (0x4082) is Konami&#x27;s: it is called with the index in A and finds its table by itself.</p>
+<pre><code>add a,a
+pop hl          ; the return address IS the table
+call HL_MAS_A
+ld e,(hl) / inc hl / ld d,(hl)
+ex de,hl
+jp (hl)</code></pre>
+<p>It never returns to the <code>call</code>. Five tables use it:</p>
+<table><tr><th>table</th><th>entries</th><th>what it picks</th></tr><tr><td>0x4144</td><td>20</td><td>the state of the game (<code>0xE000</code>)</td></tr><tr><td>0x41F8</td><td>6</td><td>the steps of the menu (<code>0xE001</code>)</td></tr><tr><td>0x6016</td><td>17</td><td>the state of the player (<code>0xE138</code>)</td></tr><tr><td>0x785D</td><td>4</td><td>the action on the kid-picking screen</td></tr><tr><td>0x7960</td><td>4</td><td>the same on the naming screen</td></tr></table>
+<p>Each one closes exactly against its lowest destination, and that is what gives its size. They are declared in <code>src/cabbagepatch.nocode</code> so the tracer does not walk into them: read as instructions, they would give false coverage.</p>
+<h2 id="and-what-runs-after-the-state">And what runs after the state</h2>
+<p>Since the dispatcher does not come back, anything that has to run behind the state has to be left on the stack first. <code>PASO_DEL_JUEGO</code> (0x4128) loads HL with <code>0x4735</code> when there is a game in play and with <code>0x40C1</code> when there is not, and pushes it: the state&#x27;s <code>ret</code> lands there.</p>
+<ul><li><code>0x4735</code> blinks the <code>1P</code>/<code>2P</code> label, one frame in thirty-two.</li><li><code>0x40C1</code> is the menu&#x27;s: a key takes you to the title with the menu on it (state 5), and there the fire key picks the option that the cursor (<code>0xE042</code>) is on, through the four bytes at <code>0x4124</code>.</li></ul>
+<h2 id="the-states-of-the-player">The states of the player</h2>
+<p>Seventeen, in the table at <code>0x6016</code>, with six holes that are <code>0x0000</code> and are never used. Walking, in the air, on the swing, on the trampoline, on the log, the goal, the stage cleared, sinking, hit. The one for being hit (<code>LE_HAN_DADO</code>, 0x6328) turns off four bits of the pattern table —the face changes— and moves to state 16 with its sound.</p>
+<p>Jumps and falls come out of a <b>table of deltas</b> read forwards and backwards: the same list, walked one way subtracting and the other adding, is the rise and the fall, and the bytes 0xFE and 0xFF are what turn it around and what end it (<code>0x5BC4</code> and friends).</p>
+<h2 id="the-sound">The sound</h2>
+<p>The player is Konami&#x27;s three-channel one, at <code>0x7AA0</code>, with <b>eleven bytes per channel</b> from <code>0xE010</code>, <code>0xE01B</code> and <code>0xE026</code>. <code>SONIDO</code> (0x7A08) asks for a number: below 0x0D it is an effect and takes one channel; from 0x0F up it is music and takes three. The number is also the <b>priority</b>: a channel already playing something with an equal or higher number is not interrupted (<code>0x7A2F</code>).</p>
+<p>Notes are a nibble each, with <code>0xFn</code> changing octave and <code>0xDn</code> setting the volume, and the twelve periods of one octave live at <code>0x7BFF</code>; lower octaves are that period doubled, once per octave (<code>add hl,hl</code>).</p>
+<h2 id="the-instruction-the-z80-does-not-have">The instruction the Z80 does not have</h2>
+<p><code>DESPLIEGA</code>, the drawing unpacker, needs <code>ld (IX+A),B</code> —a displacement that changes— and the Z80 only takes a fixed one, inside the opcode. So the cartridge writes the byte as it goes: seven bytes copied into RAM at <code>0xE5F8</code> that do <code>ld (0xE5FD),a</code> and then <code>ld (ix+00h),b</code>, where <code>0xE5FD</code> is exactly the operand of that second instruction. It is the only code in the cartridge that does not run from ROM.</p>
+<footer><p><em>Cabbage Patch Kids</em> was published by Konami for the MSX; its catalogue number is RC-716 and it is 16 KB. All rights in the game remain with their holders. This is preservation, study and documentation work, and the cartridge image is not distributed.</p></footer></div>
