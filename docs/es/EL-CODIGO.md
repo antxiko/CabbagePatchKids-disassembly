@@ -89,3 +89,30 @@ que el cartucho escribe ese byte en marcha: siete bytes copiados a la RAM en
 `0xE5F8` que hacen `ld (0xE5FD),a` y luego `ld (ix+00h),b`, donde `0xE5FD` es
 justo el operando de esa segunda instrucción. Es el único código del cartucho
 que no corre desde la ROM.
+
+## Código compartido con otros cartuchos de Konami
+
+Este desensamblado se ha comparado, instrucción por instrucción, con
+todos los demás de Konami de la serie. Cuenta un bloque cuando las
+mismas instrucciones, al menos seis desde una etiqueta hasta su `ret`
+o su salto sin condición, están en los dos cartuchos; las direcciones
+no se miran, porque cambian de un cartucho a otro. De los otros 57,
+**47** tienen al menos un bloque en común con este; estos son los
+que más comparten:
+
+| Cartucho | Bloques | Instrucciones | Por ejemplo (aquí = allí) |
+|---|---:|---:|---|
+| [Athletic Land](https://antxiko.github.io/AthleticLand-disassembly/es/) | 72 | 1.114 | `COBRA_PUNTOS` (0x5FA3) |
+| [Magical Tree](https://antxiko.github.io/MagicalTree-disassembly/es/) | 25 | 298 | `LEE_EL_TECLADO` (0x409C) = `lee_el_teclado` |
+| [Circus Charlie](https://antxiko.github.io/CircusCharlie-disassembly/es/) | 23 | 255 | `LEE_EL_TECLADO` (0x409C) = `lee_el_teclado` |
+| [Comic Bakery](https://antxiko.github.io/ComicBakery-disassembly/es/) | 20 | 206 | `LEE_EL_TECLADO` (0x409C) = `lee_el_teclado` |
+| [Konami’s Mahjong Dojo](https://antxiko.github.io/KonamisMahjongDojo-disassembly/es/) | 18 | 214 | `RELLENA_VRAM` (0x4522) = `rellena_la_vram` |
+| [Hyper Sports 1](https://antxiko.github.io/HyperSports1-disassembly/es/) | 17 | 210 | `LEE_EL_TECLADO` (0x409C) = `LEE_TECLADO` |
+| [Yie Ar Kung-Fu](https://antxiko.github.io/YieArKungFu-disassembly/es/) | 12 | 155 | `LEE_EL_TECLADO` (0x409C) = `lee_el_teclado` |
+| [Monkey Academy](https://antxiko.github.io/MonkeyAcademy-disassembly/es/) | 10 | 115 | `PINTA_BCD` (0x4718) = `PINTA_BYTES_BCD` |
+| [Super Cobra](https://antxiko.github.io/SuperCobra-disassembly/es/) | 10 | 97 | `SONIDO_SIGUIENTE_VUELTA` (0x7A5D) = `SONIDO_ENCADENADO` |
+| [Konami’s Billiards](https://antxiko.github.io/KonamisBilliards-disassembly/es/) | 8 | 97 | `PINTA_FASE` (0x4710) = `pinta_el_numero_de_fase` |
+
+La matriz entera, los 58 cartuchos entre sí, está en
+[Las rutinas](https://antxiko.github.io/MSX-disassembly-database/es/LAS-RUTINAS.html) de la base de datos de la
+serie, con el método y el programa que la mide.

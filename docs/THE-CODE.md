@@ -90,3 +90,30 @@ cartridge writes the byte as it goes: seven bytes copied into RAM at `0xE5F8`
 that do `ld (0xE5FD),a` and then `ld (ix+00h),b`, where `0xE5FD` is exactly the
 operand of that second instruction. It is the only code in the cartridge that
 does not run from ROM.
+
+## Code shared with other Konami cartridges
+
+This disassembly has been compared, instruction by instruction, with
+every other Konami one in the series. A block counts when the same
+instructions, at least six of them from a label to its `ret` or its
+unconditional jump, are in both cartridges; the addresses are left
+aside, because they change from one cartridge to the next. Of the
+other 57, **47** have at least one block in common with this one;
+these are the ones that share the most:
+
+| Cartridge | Blocks | Instructions | For example (here = there) |
+|---|---:|---:|---|
+| [Athletic Land](https://antxiko.github.io/AthleticLand-disassembly/) | 72 | 1,114 | `COBRA_PUNTOS` (0x5FA3) |
+| [Magical Tree](https://antxiko.github.io/MagicalTree-disassembly/) | 25 | 298 | `LEE_EL_TECLADO` (0x409C) = `lee_el_teclado` |
+| [Circus Charlie](https://antxiko.github.io/CircusCharlie-disassembly/) | 23 | 255 | `LEE_EL_TECLADO` (0x409C) = `lee_el_teclado` |
+| [Comic Bakery](https://antxiko.github.io/ComicBakery-disassembly/) | 20 | 206 | `LEE_EL_TECLADO` (0x409C) = `lee_el_teclado` |
+| [Konami’s Mahjong Dojo](https://antxiko.github.io/KonamisMahjongDojo-disassembly/) | 18 | 214 | `RELLENA_VRAM` (0x4522) = `rellena_la_vram` |
+| [Hyper Sports 1](https://antxiko.github.io/HyperSports1-disassembly/) | 17 | 210 | `LEE_EL_TECLADO` (0x409C) = `LEE_TECLADO` |
+| [Yie Ar Kung-Fu](https://antxiko.github.io/YieArKungFu-disassembly/) | 12 | 155 | `LEE_EL_TECLADO` (0x409C) = `lee_el_teclado` |
+| [Monkey Academy](https://antxiko.github.io/MonkeyAcademy-disassembly/) | 10 | 115 | `PINTA_BCD` (0x4718) = `PINTA_BYTES_BCD` |
+| [Super Cobra](https://antxiko.github.io/SuperCobra-disassembly/) | 10 | 97 | `SONIDO_SIGUIENTE_VUELTA` (0x7A5D) = `SONIDO_ENCADENADO` |
+| [Konami’s Billiards](https://antxiko.github.io/KonamisBilliards-disassembly/) | 8 | 97 | `PINTA_FASE` (0x4710) = `pinta_el_numero_de_fase` |
+
+The whole matrix, the 58 cartridges against each other, is on
+[The routines](https://antxiko.github.io/MSX-disassembly-database/THE-ROUTINES.html) in the series database, along
+with the method and the program that measures it.
